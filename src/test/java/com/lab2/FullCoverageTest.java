@@ -1,51 +1,84 @@
 package com.lab2;
 
+import com.lab2.csv_parsing.*;
+import com.lab2.xml_parsing.*;
+import com.lab2.json_parsing.JsonParser;
+ 
 import org.testng.annotations.Test;
-import static org.testng.Assert.*;
 
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-import com.lab2.csv_parsing.CsvSplitParser;
-import com.lab2.json_parsing.JsonParser;
-import com.lab2.xml_parsing.XmlDomParser;
+import static org.testng.Assert.*;
 
 public class FullCoverageTest {
 
     @Test
-    public void testEverything() throws Exception {
+    public void testFullCoverage() throws Exception {
+        String csvPath = "src/main/resources/students.csv";
+        String xmlPath = "src/main/resources/students.xml";
+        String jsonPath = "src/main/resources/students.json";
 
-        // CSV
-        CsvSplitParser csvParser = new CsvSplitParser();
-        try (InputStream is = Files.newInputStream(
-                Path.of("src/main/resources/students.csv"))) {
-
-            List<Student> csvStudents = csvParser.parse(is);
-            assertFalse(csvStudents.isEmpty());
-
-            StudentStatistics.getAverage(csvStudents);
+        // ==================== CSV ====================
+        try (InputStream is = Files.newInputStream(Path.of(csvPath))) {
+            List<Student> students = new CsvSplitParser().parse(is);
+            assertFalse(students.isEmpty());
         }
 
-        // XML
-        XmlDomParser xmlParser = new XmlDomParser();
-        try (InputStream is = Files.newInputStream(
-                Path.of("src/main/resources/students.xml"))) {
-
-            List<Student> xmlStudents = xmlParser.parse(is);
-            assertFalse(xmlStudents.isEmpty());
+        try (InputStream is = Files.newInputStream(Path.of(csvPath))) {
+            List<Student> students = new CsvScannerParser().parse(is);
+            assertFalse(students.isEmpty());
         }
 
-        // JSON
+        try (InputStream is = Files.newInputStream(Path.of(csvPath))) {
+            List<Student> students = new OpenCsvParser().parse(is);
+            assertFalse(students.isEmpty());
+        }
+
+        try (InputStream is = Files.newInputStream(Path.of(csvPath))) {
+            List<Student> students = new CommonsCsvParser().parse(is);
+            assertFalse(students.isEmpty());
+        }
+
+        // Запись CSV
+        new OpenCsvWriter().write("target/test_csv_opencsv.csv", 
+            List.of(new Student(99, "TestOpen", 20, 9.0)));
+        
+        new CommonsCsvWriter().write("target/test_csv_commons.csv", 
+            List.of(new Student(88, "TestCommons", 21, 8.5)));
+
+        // ==================== XML ====================
+        try (InputStream is = Files.newInputStream(Path.of(xmlPath))) {
+            List<Student> students = new XmlDomParser().parse(is);
+            assertFalse(students.isEmpty());
+        }
+
+        try (InputStream is = Files.newInputStream(Path.of(xmlPath))) {
+            List<Student> students = new XmlSaxParser().parse(is);
+            assertFalse(students.isEmpty());
+        }
+
+        // XPathParser (исправлено!)
+        try (InputStream is = Files.newInputStream(Path.of(xmlPath))) {
+            List<Student> students = new XmlXPathParser().parse(is);
+            assertFalse(students.isEmpty());
+
+            // Дополнительное задание — фильтрация
+            List<Student> highGrade = new XmlXPathParser().findStudentsWithGradeGreaterThan(is, 8.0);
+            assertNotNull(highGrade);
+        }
+
+        // ==================== JSON ====================
         JsonParser jsonParser = new JsonParser();
-        String path = "src/main/resources/students.json";
 
-        List<Student> jsonStudents = jsonParser.read(path);
+        List<Student> jsonStudents = jsonParser.read(jsonPath);
         assertFalse(jsonStudents.isEmpty());
 
-        jsonParser.addStudent(path, new Student(999, "Test", 20, 9.5));
-        jsonParser.updateStudentGrade(path, 1, 10.0);
-        jsonParser.save(path, jsonStudents);
+        jsonParser.addStudent(jsonPath, new Student(100, "NewStudent", 22, 9.8));
+        jsonParser.updateStudentGrade(jsonPath, 1, 10.0);
+
+        jsonParser.save(jsonPath, jsonStudents); // если есть метод save
     }
 }

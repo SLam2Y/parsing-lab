@@ -9,6 +9,7 @@ import java.nio.file.Files;
 
 
 import com.lab2.xml_parsing.XmlDomParser;
+import com.lab2.xml_parsing.XmlXPathParser;
 
 public class XmlParserTest {
 
@@ -35,6 +36,15 @@ public void testXmlCount() throws Exception {
         List<Student> students = parser.parse(is);
 
         assertFalse(students.isEmpty());
+    }
+
+}
+@Test
+public void testXPathFilter() throws Exception {
+    XmlXPathParser parser = new XmlXPathParser();
+    try (InputStream is = Files.newInputStream(Path.of("src/main/resources/students.xml"))) {
+        List<Student> high = parser.findStudentsWithGradeGreaterThan(is, 8.5);
+        assertNotNull(high);
     }
 }
 }

@@ -1,25 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <students>
-
     <student>
         <id>1</id>
         <name>Alex</name>
         <age>20</age>
         <grade>8.5</grade>
     </student>
-
     <student>
         <id>2</id>
         <name>John</name>
         <age>21</age>
         <grade>7.0</grade>
     </student>
-
     <student>
         <id>3</id>
         <name>Anna</name>
         <age>19</age>
         <grade>9.1</grade>
     </student>
-
+    <student>
+        <id>4</id>
+        <name>Maria</name>
+        <age>22</age>
+        <grade>8.7</grade>
+    </student>
+    <student>
+        <id>5</id>
+        <name>Peter</name>
+        <age>20</age>
+        <grade>6.5</grade>
+    </student>
+    <student>
+        <id>6</id>
+        <name>Olga</name>
+        <age>21</age>
+        <grade>9.5</grade>
+    </student>
 </students>
