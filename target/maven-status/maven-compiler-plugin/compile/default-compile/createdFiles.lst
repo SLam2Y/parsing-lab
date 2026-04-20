@@ -1,0 +1,13 @@
+com/lab2/csv_parsing/CommonsCsvParser.class
+com/lab2/csv_parsing/OpenCsvWriter.class
+com/lab2/xml_parsing/XmlSaxParser$1.class
+com/lab2/csv_parsing/CsvScannerParser.class
+com/lab2/StudentStatistics.class
+com/lab2/xml_parsing/XmlDomParser.class
+com/lab2/App.class
+com/lab2/csv_parsing/CommonsCsvWriter.class
+com/lab2/csv_parsing/CsvSplitParser.class
+com/lab2/csv_parsing/OpenCsvParser.class
+com/lab2/xml_parsing/XmlXPathParser.class
+com/lab2/Student.class
+com/lab2/xml_parsing/XmlSaxParser.class
