@@ -24,4 +24,10 @@ public class StudentStatistics {
 
         System.out.println("Average grade: " + avg);
     }
+    public static double getAverage(List<Student> students) {
+    return students.stream()
+            .mapToDouble(Student::getGrade)
+            .average()
+            .orElse(0);
+}
 }
